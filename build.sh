@@ -16,6 +16,8 @@ SKIP_ENV=0
 COPY_OUT=0
 DEPLOY_OUT=0
 
+export IDF_COMMIT="b8050b365e"
+
 function print_help() {
     echo "Usage: build.sh [-s] [-A <arduino_branch>] [-I <idf_branch>] [-i <idf_commit>] [-c <path>] [-t <target>] [-b <build|menuconfig|idf_libs|copy_bootloader|mem_variant>] [config ...]"
     echo "       -s     Skip installing/updating of ESP-IDF and all components"
