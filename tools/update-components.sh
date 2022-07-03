@@ -18,33 +18,8 @@ if [ ! -d "$AR_COMPS/arduino" ]; then
 	git clone $AR_REPO_URL "$AR_COMPS/arduino"
 fi
 
-if [ -z $AR_BRANCH ]; then
-	if [ -z $GITHUB_HEAD_REF ]; then
-		current_branch=`git branch --show-current`
-	else
-		current_branch="$GITHUB_HEAD_REF"
-	fi
-	echo "Current Branch: $current_branch"
-	if [[ "$current_branch" != "master" && `git_branch_exists "$AR_COMPS/arduino" "$current_branch"` == "1" ]]; then
-		export AR_BRANCH="$current_branch"
-	else
-		has_ar_branch=`git_branch_exists "$AR_COMPS/arduino" "idf-$IDF_BRANCH"`
-		if [ "$has_ar_branch" == "1" ]; then
-			export AR_BRANCH="idf-$IDF_BRANCH"
-		else
-			has_ar_branch=`git_branch_exists "$AR_COMPS/arduino" "$AR_PR_TARGET_BRANCH"`
-			if [ "$has_ar_branch" == "1" ]; then
-				export AR_BRANCH="$AR_PR_TARGET_BRANCH"
-			fi
-		fi
-	fi
-fi
-
-if [ "$AR_BRANCH" ]; then
-	git -C "$AR_COMPS/arduino" checkout "$AR_BRANCH" && \
-	git -C "$AR_COMPS/arduino" fetch && \
-	git -C "$AR_COMPS/arduino" pull --ff-only
-fi
+git -C "$AR_COMPS/arduino" fetch && \
+git -C "$AR_COMPS/arduino" checkout d3340837c7dbc7766f0375ef0afb45802a06c398
 if [ $? -ne 0 ]; then exit 1; fi
 
 #
@@ -54,9 +29,9 @@ if [ $? -ne 0 ]; then exit 1; fi
 if [ ! -d "$AR_COMPS/esp32-camera" ]; then
 	git clone $CAMERA_REPO_URL "$AR_COMPS/esp32-camera"
 else
-	git -C "$AR_COMPS/esp32-camera" fetch && \
-	git -C "$AR_COMPS/esp32-camera" pull --ff-only
-fi
+	git -C "$AR_COMPS/esp32-camera" fetch
+fi && \
+git -C "$AR_COMPS/esp32-camera" checkout 86a4951
 #this is a temp measure to fix build issue in recent IDF master
 if [ -f "$AR_COMPS/esp32-camera/idf_component.yml" ]; then
 	rm -rf "$AR_COMPS/esp32-camera/idf_component.yml"
@@ -70,9 +45,9 @@ if [ $? -ne 0 ]; then exit 1; fi
 if [ ! -d "$AR_COMPS/esp-dl" ]; then
 	git clone $DL_REPO_URL "$AR_COMPS/esp-dl"
 else
-	git -C "$AR_COMPS/esp-dl" fetch && \
-	git -C "$AR_COMPS/esp-dl" pull --ff-only
-fi
+	git -C "$AR_COMPS/esp-dl" fetch
+fi && \
+git -C "$AR_COMPS/esp-dl" checkout d949350
 if [ $? -ne 0 ]; then exit 1; fi
 
 #
@@ -82,9 +57,9 @@ if [ $? -ne 0 ]; then exit 1; fi
 if [ ! -d "$AR_COMPS/esp-sr" ]; then
 	git clone $SR_REPO_URL "$AR_COMPS/esp-sr"
 else
-	git -C "$AR_COMPS/esp-sr" fetch && \
-	git -C "$AR_COMPS/esp-sr" pull --ff-only
-fi
+	git -C "$AR_COMPS/esp-sr" fetch
+fi && \
+git -C "$AR_COMPS/esp-sr" checkout d05cf97
 if [ $? -ne 0 ]; then exit 1; fi
 
 #
@@ -96,9 +71,9 @@ if [ ! -d "$AR_COMPS/esp_littlefs" ]; then
     git -C "$AR_COMPS/esp_littlefs" submodule update --init --recursive
 else
 	git -C "$AR_COMPS/esp_littlefs" fetch && \
-	git -C "$AR_COMPS/esp_littlefs" pull --ff-only && \
     git -C "$AR_COMPS/esp_littlefs" submodule update --init --recursive
-fi
+fi && \
+git -C "$AR_COMPS/esp_littlefs" checkout 29341d0
 if [ $? -ne 0 ]; then exit 1; fi
 
 #
@@ -111,9 +86,9 @@ if [ ! -d "$AR_COMPS/esp-rainmaker" ]; then
     # git -C "$AR_COMPS/esp-rainmaker" checkout f1b82c71c4536ab816d17df016d8afe106bd60e3
 else
 	git -C "$AR_COMPS/esp-rainmaker" fetch && \
-	git -C "$AR_COMPS/esp-rainmaker" pull --ff-only && \
     git -C "$AR_COMPS/esp-rainmaker" submodule update --init --recursive
-fi
+fi && \
+git -C "$AR_COMPS/esp-rainmaker" checkout f57a5ec
 if [ $? -ne 0 ]; then exit 1; fi
 
 #
@@ -127,9 +102,9 @@ if [ ! -d "$AR_COMPS/esp-dsp" ]; then
 	# echo "$cml" >> "$AR_COMPS/esp-dsp/CMakeLists.txt"
 	# echo "endif()" >> "$AR_COMPS/esp-dsp/CMakeLists.txt"
 else
-	git -C "$AR_COMPS/esp-dsp" fetch && \
-	git -C "$AR_COMPS/esp-dsp" pull --ff-only
-fi
+	git -C "$AR_COMPS/esp-dsp" fetch
+fi && \
+git -C "$AR_COMPS/esp-dsp" checkout 07aa7b1
 if [ $? -ne 0 ]; then exit 1; fi
 
 #
@@ -139,8 +114,8 @@ if [ $? -ne 0 ]; then exit 1; fi
 if [ ! -d "$AR_COMPS/arduino_tinyusb/tinyusb" ]; then
 	git clone $TINYUSB_REPO_URL "$AR_COMPS/arduino_tinyusb/tinyusb"
 else
-	git -C "$AR_COMPS/arduino_tinyusb/tinyusb" fetch && \
-	git -C "$AR_COMPS/arduino_tinyusb/tinyusb" pull --ff-only
-fi
+	git -C "$AR_COMPS/arduino_tinyusb/tinyusb" fetch
+fi && \
+git -C "$AR_COMPS/arduino_tinyusb/tinyusb" checkout b5a9537eea81bd6ffd8d575dbd2b5823c2fc1f0e
 if [ $? -ne 0 ]; then exit 1; fi
 
