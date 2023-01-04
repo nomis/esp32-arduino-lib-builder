@@ -16,6 +16,8 @@ SKIP_ENV=0
 COPY_OUT=0
 DEPLOY_OUT=0
 
+export IDF_COMMIT="6407ecb3f8"
+
 function print_help() {
     echo "Usage: build.sh [-s] [-A <arduino_branch>] [-I <idf_branch>] [-i <idf_commit>] [-c <path>] [-t <target>] [-b <build|menuconfig|idf_libs|copy_bootloader|mem_variant>] [config ...]"
     echo "       -s     Skip installing/updating of ESP-IDF and all components"
@@ -56,10 +58,10 @@ while getopts ":A:I:i:c:t:b:sd" opt; do
             ;;
         b )
             b=$OPTARG
-            if [ "$b" != "build" ] && 
-               [ "$b" != "menuconfig" ] && 
-               [ "$b" != "idf_libs" ] && 
-               [ "$b" != "copy_bootloader" ] && 
+            if [ "$b" != "build" ] &&
+               [ "$b" != "menuconfig" ] &&
+               [ "$b" != "idf_libs" ] &&
+               [ "$b" != "copy_bootloader" ] &&
                [ "$b" != "mem_variant" ]; then
                 print_help
             fi
@@ -97,7 +99,7 @@ if [ "$BUILD_TYPE" != "all" ]; then
         print_help
     fi
     configs="configs/defconfig.common;configs/defconfig.$TARGET"
-    
+
     # Target Features Configs
     for target_json in `jq -c '.targets[]' configs/builds.json`; do
         target=$(echo "$target_json" | jq -c '.target' | tr -d '"')
