@@ -8,7 +8,7 @@ SR_REPO_URL="https://github.com/espressif/esp-sr.git"
 RMAKER_REPO_URL="https://github.com/espressif/esp-rainmaker.git"
 INSIGHTS_REPO_URL="https://github.com/espressif/esp-insights.git"
 DSP_REPO_URL="https://github.com/espressif/esp-dsp.git"
-LITTLEFS_REPO_URL="https://github.com/joltwallet/esp_littlefs.git"
+LITTLEFS_REPO_URL="https://github.com/nomis/esp_littlefs.git"
 TINYUSB_REPO_URL="https://github.com/hathach/tinyusb.git"
 
 #
